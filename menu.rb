@@ -9,4 +9,5 @@ def menu
   puts "(M)anage your existing account".color(:red) + "\n\n"
   print ">> ".color(:red)
   gets.chomp.downcase
+  gets
 end
