@@ -1,8 +1,9 @@
+require_relative 'spec_helper'
 require_relative '../client'
 require_relative '../portfolio'
 
 describe Client do
-  let(:client) { Client.new('X', 400_000) }
+  let(:client) { Client.new('X', 400) }
 
   describe ".new" do
 
@@ -64,3 +65,4 @@ describe Client do
       expect(client.balance).to eq 400_000
     end
   end
+end
