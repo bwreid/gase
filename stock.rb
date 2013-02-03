@@ -14,6 +14,10 @@ class Stock
   end
 
   def current
-    YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{@name}")["#{@name}"].lastTrade
+    begin
+      YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{@name}")["#{@name}"].lastTrade
+    rescue
+      retry
+    end
   end
 end

@@ -41,7 +41,7 @@ while response != 'q'
         if response =='f' # CHECK FOR A CURRENT STOCK PRICE
           print "What stock to check? ".color(:blue)
           check_stock = gets.chomp.upcase
-          current_value = YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{check_stock}")["#{check_stock}"].lastTrade
+          current_value = gen_stock_check(check_stock)
           puts "The price of #{check_stock} is $#{current_value}."
         end
 
@@ -50,7 +50,7 @@ while response != 'q'
           portfolio = gets.chomp.downcase.to_sym
           print "What stock would you like to buy? ".color(:blue)
           check_stock = gets.chomp.upcase
-          current_value = YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{check_stock}")["#{check_stock}"].lastTrade
+          current_value = gen_stock_check(check_stock)
           puts "The price of #{check_stock} is currently $#{current_value}."
           print "How many shares would you like to buy? ".color(:blue)
           shares = gets.chomp.to_i
@@ -63,11 +63,12 @@ while response != 'q'
           portfolio = gets.chomp.downcase.to_sym
           print "What stock would you like to sell? ".color(:blue)
           stock = gets.chomp.upcase
-          current_value = YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{stock}")["#{stock}"].lastTrade
+          current_value = gen_stock_check(stock)
           puts "You would make $#{current_value - portfolios[portfolio].stocks[stock.to_sym].bought_at} off of each share. You have #{portfolios[portfolio].stocks[stock.to_sym].num_stocks} shares."
           print "How many shares would you like to sell? ".color(:blue)
           shares = gets.chomp.to_i
-          puts client.sell(stock, shares, portfolio)
+          value = client.sell(stock, shares, portfolio)
+          puts "Thank you! You're cash balance is now: " + "#{value}.".color(:yellow)
         end
 
         response = gets.chomp.downcase

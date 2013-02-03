@@ -26,7 +26,8 @@ def client_listings(clients_portfolios)
 end
 
 def portfolio_totals(client, portfolios)
-  # binding.pry
+  overall_value = 0
+
   portfolios.keys.each do |this|
 
     p_value = 0
@@ -40,8 +41,18 @@ def portfolio_totals(client, portfolios)
       p_value += value
       print("#{stock.name}".color(:red) + ": $#{value} | ") if p_value != 0
     end
-
-    puts "($#{p_value})"
+    overall_value += p_value
+    print "($#{p_value}) "
   end
+  puts "\nOverall, your portfolios are worth $#{overall_value}."
+  puts "Your total value is " + "$#{overall_value + client.balance}.".color(:yellow)
+end
 
+def gen_stock_check(stock_string)
+  begin
+    YahooFinance::get_quotes(YahooFinance::StandardQuote, "#{stock_string}")["#{stock_string}"].lastTrade
+  rescue
+    puts "Something went wrong. Sorry."
+    # retry
+  end
 end
