@@ -18,16 +18,22 @@ class Client
   end
 
   def buy(stock, initial_value, num_stocks, portfolio)
-    if (@portfolios.count != 0) && ((num_stocks * initial_value) <= @balance)
+    if (@portfolios[portfolio]) && ((num_stocks * initial_value) <= @balance) && (initial_value != 0)
       @balance -= (num_stocks * initial_value)
-      @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym] = Stock.new(stock, initial_value, num_stocks)
+      if @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym]
+        @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym].num_stocks += num_stocks
+        @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym]
+      else
+        @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym] = Stock.new(stock, initial_value, num_stocks)
+        @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym]
+      end
     else
       print "Sorry. Something went wrong."
     end
   end
 
   def sell(stock, num_stocks, portfolio)
-    if @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym].num_stocks > num_stocks
+    if @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym].num_stocks >= num_stocks
       @portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym].num_stocks -= num_stocks
       @balance += (@portfolios[portfolio.downcase.to_sym].stocks[stock.upcase.to_sym].current * num_stocks)
     else
